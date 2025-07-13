@@ -1,0 +1,16 @@
+current directory: /Users/carlorenoria/Desktop/Projects/IGDPMonitoring/vendor/bundle/ruby/2.7.0/gems/nkf-0.2.0/ext/nkf
+/Users/carlorenoria/.rvm/rubies/ruby-2.7.6/bin/ruby -I /Users/carlorenoria/.rvm/rubies/ruby-2.7.6/lib/ruby/2.7.0 -r ./siteconf20250714-43954-unwqbt.rb extconf.rb
+creating Makefile
+
+current directory: /Users/carlorenoria/Desktop/Projects/IGDPMonitoring/vendor/bundle/ruby/2.7.0/gems/nkf-0.2.0/ext/nkf
+make "DESTDIR=" clean
+
+current directory: /Users/carlorenoria/Desktop/Projects/IGDPMonitoring/vendor/bundle/ruby/2.7.0/gems/nkf-0.2.0/ext/nkf
+make "DESTDIR="
+compiling nkf.c
+linking shared-object nkf.bundle
+ld: warning: -multiply_defined is obsolete
+
+current directory: /Users/carlorenoria/Desktop/Projects/IGDPMonitoring/vendor/bundle/ruby/2.7.0/gems/nkf-0.2.0/ext/nkf
+make "DESTDIR=" install
+/opt/homebrew/opt/coreutils/bin/ginstall -c -m 0755 nkf.bundle ./.gem.20250714-43954-618xsd
