@@ -8,19 +8,15 @@ import {
 	ActivityIndicator,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useUserViewModel } from "@features/member/viewModel/useUserViewModel";
 import { Separator } from "@component/Separator";
 import { AppStackParamList } from "src/types/navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CCFHeader from "@components/CCFHeader";
-import MemberItem, {
-	MemberCardProps,
-} from "@features/member/components/MemberItem";
-import { useDGroupViewModel } from "../viewModel/userDGroupViewModel";
-import DGroupListCard from "src/feature/dgroup/view/components/DGroupListCard";
+import { MemberCardProps } from "@features/member/components/MemberItem";
 import { toast } from "@component/toast/toast";
 import DGroupListItem from "../components/DGroupListItem";
+import { useDGroupLeadersViewModel } from "../viewModel/useDGroupLeadersViewModel";
 
 type UserRouteProp = RouteProp<AppStackParamList, "UserNavigator">;
 type NavProp = NativeStackNavigationProp<AppStackParamList>;
@@ -41,13 +37,14 @@ const DGroupLeaderSelectionScreen = () => {
 	const insets = useSafeAreaInsets();
 	const { theme } = useTheme();
 	const {
-		dgroups,
-		refresh,
+		leaders,
 		loading,
 		fetching,
-		searchDGroups,
-		loadMoreDGroups,
-	} = useDGroupViewModel();
+		searchLeaders,
+		loadMoreLeaders,
+		refresh,
+		hasMore,
+	} = useDGroupLeadersViewModel();
 	const [searchText, setSearchText] = useState("");
 	const [
 		onEndReachedCalledDuringMomentum,
@@ -57,6 +54,7 @@ const DGroupLeaderSelectionScreen = () => {
 	const Refresh = () => (
 		<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
 	);
+	console.log(leaders);
 
 	const onRefresh = useCallback(async () => {
 		setRefreshing(true);
@@ -66,7 +64,7 @@ const DGroupLeaderSelectionScreen = () => {
 
 	useEffect(() => {
 		const delay = setTimeout(() => {
-			searchDGroups(searchText);
+			searchLeaders(searchText);
 		}, 300);
 
 		return () => clearTimeout(delay);
@@ -82,19 +80,13 @@ const DGroupLeaderSelectionScreen = () => {
 			]}
 		>
 			<CCFHeader
+				placeholder="Search leaders.."
 				enableSearch
-				showAdd
-				searchText={searchText}
 				onChangeSearch={setSearchText}
-				onAddPress={() => {
-					navigation.navigate("DGroupNavigator", {
-						screen: "DGroupFormScreen",
-					});
-				}}
-				placeholder="Search DGroup.."
+				searchText={searchText}
 			/>
 			<FlatList
-				data={dgroups}
+				data={leaders}
 				keyExtractor={(item) => item.id.toString()}
 				ItemSeparatorComponent={Separator}
 				ListHeaderComponent={<View style={{ height: 16 }} />}
@@ -104,8 +96,6 @@ const DGroupLeaderSelectionScreen = () => {
 						id={item.id}
 						name={item.groupName}
 						leaders={item.leadersName}
-						members={item.memberCount}
-						category={item.memberTypes}
 						avatar={null}
 						onPress={() =>
 							toast.default("DGroup Item function is not implemented yet")
@@ -115,7 +105,7 @@ const DGroupLeaderSelectionScreen = () => {
 				refreshControl={Refresh()}
 				onEndReached={() => {
 					if (!onEndReachedCalledDuringMomentum && !fetching && !loading) {
-						loadMoreDGroups();
+						loadMoreLeaders();
 						setOnEndReachedCalledDuringMomentum(true);
 					}
 				}}

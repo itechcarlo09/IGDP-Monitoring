@@ -11,3 +11,10 @@ export interface DGroupItemUI {
 	memberTypes: LifeStage[];
 	gender: Gender | "Couples";
 }
+
+export interface DGroupLeaderItemUI {
+	id: number | string;
+	groupName: string;
+	leadersName: string;
+	gender: Gender | "Couples";
+}

@@ -1,6 +1,6 @@
 import { Gender } from "src/types/enums/Gender";
 import { PaginatedResponse } from "../../../types/paginationTypes";
-import { LifeStage } from "src/types/enums/LifeStage";
+import { DGroupType, LifeStage } from "src/types/enums/LifeStage";
 
 // export interface Speaker {
 // 	id: number;
@@ -27,6 +27,9 @@ export interface DGroupDTO {
 }
 
 export interface DMemberDTO {
+	dgroupId: number;
+	dgroupName: string;
+	type: DGroupType;
 	id: number;
 	firstName: string;
 	middleName?: string;
@@ -42,4 +45,20 @@ export interface DGroupListItemDTO {
 	lifestage: LifeStage[];
 }
 
-export type GetDGroupResponse = PaginatedResponse<DGroupListItemDTO>;
+export interface DGroupCoupleLeaderListItemDTO {
+	dgroupId: number;
+	dgroupName: string;
+	type: DGroupType;
+	id: number;
+	husbandId: number;
+	husbandFirstName: string;
+	husbandMiddleName: string;
+	husbandLastName: string;
+	wifeId: number;
+	wifeFirstName: string;
+	wifeMiddleName: string;
+	wifeLastName: string;
+}
+
+export type GetDGroupResponse =
+	PaginatedResponse<DGroupCoupleLeaderListItemDTO>;

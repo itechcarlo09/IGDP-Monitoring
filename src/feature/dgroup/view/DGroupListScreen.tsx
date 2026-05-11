@@ -10,7 +10,7 @@ import { useTheme } from "../../../theme/ThemeProvider";
 import Loading from "../../../component/Loading";
 import Header from "@component/Header";
 import DGroupListCard from "./components/DGroupListCard";
-import { useDGroupViewModel } from "../../../features/dgroup/viewModel/userDGroupViewModel";
+import { useDGroupViewModel } from "../../../features/dgroup/viewModel/useDGroupViewModel";
 import { Separator } from "@component/Separator";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import useDebounce from "@features/member/hooks/useDebounce";

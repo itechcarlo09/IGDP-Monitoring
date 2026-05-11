@@ -90,47 +90,53 @@ export default function DGroupListItem({
 						{name}
 					</Text>
 
-					<View style={styles.metaRow}>
-						<Text style={[styles.metaText, { color: theme.muted }]}>
-							{Array.isArray(leaders) ? "Leaders" : "Leader"}:{" "}
-							{Array.isArray(leaders) ? leaders.join(", ") : leaders}
-						</Text>
-					</View>
+					{leaders && (
+						<View style={styles.metaRow}>
+							<Text style={[styles.metaText, { color: theme.muted }]}>
+								{Array.isArray(leaders) ? "Leaders" : "Leader"}:{" "}
+								{Array.isArray(leaders) ? leaders.join(", ") : leaders}
+							</Text>
+						</View>
+					)}
 
-					<View style={styles.bottomRow}>
-						{Array.isArray(category) ? (
-							category.slice(0, 2).map((item, index) => (
-								<View
-									key={index}
-									style={[styles.badge, { backgroundColor: theme.badge }]}
-								>
+					{category && (
+						<View style={styles.bottomRow}>
+							{Array.isArray(category) ? (
+								category.slice(0, 2).map((item, index) => (
+									<View
+										key={index}
+										style={[styles.badge, { backgroundColor: theme.badge }]}
+									>
+										<Text
+											style={[
+												design.typography.caption,
+												{ color: theme.badgeText },
+											]}
+										>
+											{item}
+										</Text>
+									</View>
+								))
+							) : (
+								<View style={[styles.badge, { backgroundColor: theme.badge }]}>
 									<Text
 										style={[
 											design.typography.caption,
 											{ color: theme.badgeText },
 										]}
 									>
-										{item}
+										{category}
 									</Text>
 								</View>
-							))
-						) : (
-							<View style={[styles.badge, { backgroundColor: theme.badge }]}>
-								<Text
-									style={[
-										design.typography.caption,
-										{ color: theme.badgeText },
-									]}
-								>
-									{category}
-								</Text>
-							</View>
-						)}
+							)}
 
-						<Text style={styles.lastAttendance}>
-							{members} {category[0] === "Couples" ? "Couples" : "Members"}
-						</Text>
-					</View>
+							{members && (
+								<Text style={styles.lastAttendance}>
+									{members} {category[0] === "Couples" ? "Couples" : "Members"}
+								</Text>
+							)}
+						</View>
+					)}
 				</View>
 
 				<MDIIcon path={mdiChevronRight} size={22} color="#9CA3AF" />

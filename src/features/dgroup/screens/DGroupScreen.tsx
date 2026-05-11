@@ -17,7 +17,7 @@ import CCFHeader from "@components/CCFHeader";
 import MemberItem, {
 	MemberCardProps,
 } from "@features/member/components/MemberItem";
-import { useDGroupViewModel } from "../viewModel/userDGroupViewModel";
+import { useDGroupViewModel } from "../viewModel/useDGroupViewModel";
 import DGroupListCard from "src/feature/dgroup/view/components/DGroupListCard";
 import { toast } from "@component/toast/toast";
 import DGroupListItem from "../components/DGroupListItem";

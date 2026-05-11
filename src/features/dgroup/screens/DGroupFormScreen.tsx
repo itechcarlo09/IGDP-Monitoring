@@ -61,7 +61,7 @@ const DGroupFormScreen = () => {
 						required
 						placeholder="Select Leader"
 						value={formik.values.lifeStage}
-						onPress={() => navigation.navigate("DGroupListScreen")}
+						onPress={() => navigation.navigate("DGroupLeaderScreen")}
 						error={formik.errors.lifeStage}
 						touched={formik.touched.lifeStage}
 					/>

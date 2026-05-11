@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { dgroupRepository } from "../data/dgroupRepository";
 import { toast } from "@component/toast/toast";
-import { useDGroupViewModel } from "../viewModel/userDGroupViewModel";
+import { useDGroupViewModel } from "../viewModel/useDGroupViewModel";
 import { DGroupListItemDTO } from "../model/DGroup";
 
 interface UseDGroupFormProps {

@@ -1,11 +1,14 @@
-import { showError } from "src/utils/errorUtils";
 import apiClient from "../../../services/apiClient";
 import {
 	DGroupDTO,
 	GetDGroupResponse,
 } from "../../../features/dgroup/model/DGroup";
-import { GetDGroupParams } from "../../../features/dgroup/model/RequestParams";
+import {
+	GetDGroupLeadersParams,
+	GetDGroupParams,
+} from "../../../features/dgroup/model/RequestParams";
 import { PAGE_SIZE } from "src/types/globalTypes";
+import { toast } from "@component/toast/toast";
 
 export const dgroupDataSource = {
 	// async getMinistriesById(id: string): Promise<MinistryDTO | null> {
@@ -30,10 +33,45 @@ export const dgroupDataSource = {
 				},
 			};
 		} catch (error: any) {
-			showError(error);
+			toast.error(error);
 
 			return {
 				data: [], // fallback safe value
+				meta: {
+					page: 0,
+					limit: PAGE_SIZE,
+					hasMore: false,
+				},
+			};
+		}
+	},
+
+	async getDGroupLeaders(
+		params?: GetDGroupParams,
+		body?: GetDGroupLeadersParams,
+	): Promise<GetDGroupResponse> {
+		try {
+			const res = await apiClient.post<GetDGroupResponse>(
+				"/account/dgroup-leaders",
+				body,
+				{
+					params,
+				},
+			);
+
+			return {
+				data: res.data?.data ?? [],
+				meta: res.data?.meta ?? {
+					page: 0,
+					limit: PAGE_SIZE,
+					hasMore: false,
+				},
+			};
+		} catch (error: any) {
+			toast.error(error);
+
+			return {
+				data: [],
 				meta: {
 					page: 0,
 					limit: PAGE_SIZE,
@@ -48,7 +86,7 @@ export const dgroupDataSource = {
 			const res = await apiClient.get<DGroupDTO>(`/dgroup/${id}`);
 			return res.data ? res.data : null;
 		} catch (error: any) {
-			showError(error);
+			toast.error(error);
 			return null;
 		}
 	},
