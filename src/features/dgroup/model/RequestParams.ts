@@ -10,7 +10,14 @@ export type GetDGroupParams = {
 };
 
 export type GetDGroupLeadersParams = {
-	exemptedAccountId: number;
-	gender: Gender;
+	exemptedAccountId?: number;
+	gender?: Gender;
 	type: DGroupType;
+};
+
+export type AddDGroupLeadersParams = {
+	name?: string;
+	dleaders: number[];
+	type: DGroupType;
+	churchId: number;
 };

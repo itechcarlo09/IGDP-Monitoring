@@ -11,19 +11,30 @@ import { DGroupType } from "src/types/enums/LifeStage";
 // =========================
 // 🔑 QUERY KEYS
 // =========================
-const dgroupLeaderKeys = {
+export const dgroupLeaderKeys = {
 	all: ["dgroup-leaders"] as const,
-	lists: (search: string) => ["dgroup-leaders", search] as const,
+
+	lists: (params?: unknown) =>
+		[...dgroupLeaderKeys.all, "list", params] as const,
 };
 
-export const useDGroupLeadersViewModel = () => {
+export const useDGroupLeadersViewModel = (
+	gender?: Gender,
+	type: DGroupType,
+	exemptedAccountId?: number,
+) => {
 	const [search, setSearch] = useState("");
 
 	// =========================
 	// 📄 DGROUP LEADERS LIST (INFINITE)
 	// =========================
 	const leadersQuery = useInfiniteQuery({
-		queryKey: dgroupLeaderKeys.lists(search),
+		queryKey: dgroupLeaderKeys.lists({
+			search,
+			gender,
+			type,
+			exemptedAccountId,
+		}),
 
 		queryFn: async ({ pageParam = 1 }) => {
 			const skip = (pageParam - 1) * PAGE_SIZE;
@@ -34,7 +45,11 @@ export const useDGroupLeadersViewModel = () => {
 					skip,
 					take: PAGE_SIZE,
 				},
-				{ gender: Gender.Male, type: DGroupType.Singles, exemptedAccountId: 0 },
+				{
+					...(gender && { gender }),
+					type,
+					...(exemptedAccountId && { exemptedAccountId }),
+				},
 			);
 
 			return {

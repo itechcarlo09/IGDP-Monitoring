@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, View } from "react-native";
 import Loading from "../../../component/Loading";
 import { useTheme } from "../../../theme/ThemeProvider";
@@ -14,6 +14,8 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { DgroupStackParamList } from "src/types/navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CCFSelectInput from "@components/CCFSelectInput";
+import { Gender } from "src/types/enums/Gender";
+import { useAccountStore } from "@features/account/account.store";
 
 type SchoolRouteProp = RouteProp<DgroupStackParamList, "DGroupFormScreen">;
 type NavProp = NativeStackNavigationProp<DgroupStackParamList>;
@@ -21,13 +23,23 @@ type NavProp = NativeStackNavigationProp<DgroupStackParamList>;
 const DGroupFormScreen = () => {
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
+	const { account } = useAccountStore();
 	const navigation = useNavigation<NavProp>();
 	const route = useRoute<SchoolRouteProp>();
-	const { formik, loading } = useDGroupForm({ dGroupId: 0, churchId: 0 });
+	const { formik, loading } = useDGroupForm({
+		dGroupId: 0,
+		churchId: 0,
+		onSuccess: navigation.goBack,
+	});
 	const lifeStageItems = Object.values(DGroupType).map((item) => ({
 		label: item,
 		value: item,
 	}));
+
+	useEffect(() => {
+		formik.setFieldValue("churchId", account?.churchId);
+		formik.setFieldValue("type", lifeStageItems[0].value);
+	}, []);
 
 	if (loading) return <Loading />;
 
@@ -54,14 +66,28 @@ const DGroupFormScreen = () => {
 						name="type"
 						items={lifeStageItems}
 						value={formik.values.type}
-						onChange={(value) => formik.setFieldValue("type", value)}
+						onChange={(value) => {
+							if (value === formik.values.type) return;
+							formik.setFieldValue("lifeStage", "");
+							formik.setFieldValue("type", value);
+							formik.setFieldValue("dleaders", []);
+						}}
+						error={formik.errors.type}
 					/>
 					<CCFSelectInput
 						label="DGroup Leader"
 						required
 						placeholder="Select Leader"
 						value={formik.values.lifeStage}
-						onPress={() => navigation.navigate("DGroupLeaderScreen")}
+						onPress={() =>
+							navigation.navigate("DGroupLeaderScreen", {
+								type: formik.values.type,
+								onSuccess: (name, ids) => {
+									formik.setFieldValue("lifeStage", name);
+									formik.setFieldValue("dleaders", ids);
+								},
+							})
+						}
 						error={formik.errors.lifeStage}
 						touched={formik.touched.lifeStage}
 					/>

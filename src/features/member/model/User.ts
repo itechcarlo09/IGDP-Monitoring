@@ -61,6 +61,7 @@ export interface UserDTO {
 	emergencyContactNumber?: string;
 	education: EducationDTO[];
 	employment: EmploymentDTO[];
+	churchId: number;
 }
 
 export interface AddEducationDTO {

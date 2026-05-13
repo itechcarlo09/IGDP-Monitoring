@@ -48,17 +48,15 @@ export const mapDGroupToUI = (dgroup: DGroupListItemDTO): DGroupItemUI => {
 
 const mapSingleLeader = (item: DMemberDTO): DGroupLeaderItemUI => ({
 	id: item.id,
-	groupName: item.dgroupName,
-	leadersName: `${item.firstName} ${item.lastName}`,
+	groupName: `${item.firstName} ${item.lastName}`,
 	gender: item.gender,
 });
 
 const mapCoupleLeader = (
 	item: DGroupCoupleLeaderListItemDTO,
 ): DGroupLeaderItemUI => ({
-	id: `couple-${item.husbandId}-${item.wifeId}`,
-	groupName: item.dgroupName,
-	leadersName: `${item.husbandFirstName} & ${item.wifeFirstName} ${item.husbandLastName}`,
+	id: [item.husbandId, item.wifeId],
+	groupName: `${item.husbandFirstName} & ${item.wifeFirstName} ${item.husbandLastName}`,
 	gender: "Couples",
 });
 

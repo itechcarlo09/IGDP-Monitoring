@@ -94,7 +94,14 @@ export type EventRouteProp<T extends keyof EventStackParamList> = RouteProp<
 export type DgroupStackParamList = {
 	DGroupFormScreen: { id?: number } | undefined;
 	DGroupListScreen: undefined;
-	DGroupLeaderScreen: undefined;
+	DGroupLeaderScreen:
+		| {
+				gender?: Gender;
+				type: DGroupType;
+				exemptedAccountId?: number;
+				onSuccess: (leaderName: string, leadersIDs: number[]) => void;
+		  }
+		| undefined;
 };
 
 export type DgrouptNavigationProp<

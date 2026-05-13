@@ -9,17 +9,16 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Separator } from "@component/Separator";
-import { AppStackParamList } from "src/types/navigation";
+import { DgroupStackParamList } from "src/types/navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CCFHeader from "@components/CCFHeader";
 import { MemberCardProps } from "@features/member/components/MemberItem";
-import { toast } from "@component/toast/toast";
 import DGroupListItem from "../components/DGroupListItem";
 import { useDGroupLeadersViewModel } from "../viewModel/useDGroupLeadersViewModel";
 
-type UserRouteProp = RouteProp<AppStackParamList, "UserNavigator">;
-type NavProp = NativeStackNavigationProp<AppStackParamList>;
+type UserRouteProp = RouteProp<DgroupStackParamList, "DGroupLeaderScreen">;
+type NavProp = NativeStackNavigationProp<DgroupStackParamList>;
 const getRandomStatus = (): MemberCardProps["status"] => {
 	const statuses: MemberCardProps["status"][] = [
 		"Active",
@@ -35,6 +34,7 @@ const DGroupLeaderSelectionScreen = () => {
 	const navigation = useNavigation<NavProp>();
 	const route = useRoute<UserRouteProp>();
 	const insets = useSafeAreaInsets();
+	const { onSuccess, gender, type, exemptedAccountId } = route.params || {};
 	const { theme } = useTheme();
 	const {
 		leaders,
@@ -44,7 +44,7 @@ const DGroupLeaderSelectionScreen = () => {
 		loadMoreLeaders,
 		refresh,
 		hasMore,
-	} = useDGroupLeadersViewModel();
+	} = useDGroupLeadersViewModel(gender, type, exemptedAccountId);
 	const [searchText, setSearchText] = useState("");
 	const [
 		onEndReachedCalledDuringMomentum,
@@ -54,7 +54,6 @@ const DGroupLeaderSelectionScreen = () => {
 	const Refresh = () => (
 		<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
 	);
-	console.log(leaders);
 
 	const onRefresh = useCallback(async () => {
 		setRefreshing(true);
@@ -93,13 +92,18 @@ const DGroupLeaderSelectionScreen = () => {
 				style={{ paddingHorizontal: 16 }}
 				renderItem={({ item }) => (
 					<DGroupListItem
-						id={item.id}
+						id={Array.isArray(item.id) ? item.id.join(",") : item.id}
 						name={item.groupName}
 						leaders={item.leadersName}
 						avatar={null}
-						onPress={() =>
-							toast.default("DGroup Item function is not implemented yet")
-						}
+						onPress={() => {
+							onSuccess &&
+								onSuccess(
+									item.groupName ?? "",
+									Array.isArray(item.id) ? item.id : [item.id],
+								);
+							navigation.goBack();
+						}}
 					/>
 				)}
 				refreshControl={Refresh()}

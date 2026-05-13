@@ -10,6 +10,7 @@ import { DGroupItemUI } from "../model/DGroupItemUI";
 import { PAGE_SIZE } from "src/types/globalTypes";
 import { mapDGroupToUI } from "../data/dgroup.mapper";
 import { dgroupRepository } from "../data/dgroupRepository";
+import { AddDGroupLeadersParams } from "../model/RequestParams";
 
 // =========================
 // 🔑 QUERY KEYS
@@ -63,7 +64,7 @@ export const useDGroupViewModel = () => {
 	// ➕ ADD
 	// =========================
 	const addDGroupMutation = useMutation({
-		mutationFn: (data: Omit<DGroupDTO, "id">) =>
+		mutationFn: (data: AddDGroupLeadersParams) =>
 			dgroupRepository.addDGroup?.(data),
 
 		onSuccess: () => {

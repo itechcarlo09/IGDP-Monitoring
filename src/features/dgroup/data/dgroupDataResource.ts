@@ -4,6 +4,7 @@ import {
 	GetDGroupResponse,
 } from "../../../features/dgroup/model/DGroup";
 import {
+	AddDGroupLeadersParams,
 	GetDGroupLeadersParams,
 	GetDGroupParams,
 } from "../../../features/dgroup/model/RequestParams";
@@ -68,7 +69,7 @@ export const dgroupDataSource = {
 				},
 			};
 		} catch (error: any) {
-			toast.error(error);
+			toast.error(error.message);
 
 			return {
 				data: [],
@@ -105,13 +106,12 @@ export const dgroupDataSource = {
 	// 		return undefined;
 	// 	}
 	// },
-	// async add(user: Omit<Event, "id">): Promise<void> {
-	// 	try {
-	// 		await eventCollection.doc().set(eventConverter.toFirestore(user));
-	// 	} catch (error) {
-	// 		console.error("eventDataSource.add error:", error);
-	// 	}
-	// },
+
+	async addDGroup(data: AddDGroupLeadersParams): Promise<DGroupDTO> {
+		const res = await apiClient.post<DGroupDTO>("/dgroup", data);
+		return res.data;
+	},
+
 	// async update(id: string, data: Partial<Event>): Promise<void> {
 	// 	try {
 	// 		await eventCollection.doc(id).update({

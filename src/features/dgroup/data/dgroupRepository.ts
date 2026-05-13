@@ -5,7 +5,7 @@ export const dgroupRepository = {
 	getDGroups: dgroupDataSource.getDGroups,
 	getDGroupLeaders: dgroupDataSource.getDGroupLeaders,
 	// searchEvents: eventDataSource.searchEvents,
-	// addEvent: eventDataSource.add,
+	addDGroup: dgroupDataSource.addDGroup,
 	// updateEvent: eventDataSource.update,
 	// deleteEvent: eventDataSource.delete,
 };

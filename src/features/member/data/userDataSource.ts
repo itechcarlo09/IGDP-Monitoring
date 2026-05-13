@@ -72,7 +72,6 @@ export const userDataSource = {
 	},
 
 	async addUser(data: CreateAccountBasicInfoDTO): Promise<UserDTO | undefined> {
-		console.log("addUser error DataSource:");
 		const res = await apiClient.post<UserDTO>("/account", {
 			basicInfo: {
 				...data,

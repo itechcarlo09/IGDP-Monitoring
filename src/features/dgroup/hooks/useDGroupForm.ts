@@ -6,6 +6,7 @@ import { dgroupRepository } from "../data/dgroupRepository";
 import { toast } from "@component/toast/toast";
 import { useDGroupViewModel } from "../viewModel/useDGroupViewModel";
 import { DGroupListItemDTO } from "../model/DGroup";
+import { DGroupType } from "src/types/enums/LifeStage";
 
 interface UseDGroupFormProps {
 	dGroupId?: number;
@@ -15,7 +16,7 @@ interface UseDGroupFormProps {
 
 const staticInitialValues = {
 	name: "",
-	type: [],
+	type: "Singles" as DGroupType,
 	leader: [],
 	dleaders: [] as number[],
 	dmembers: [] as number[],
@@ -52,10 +53,12 @@ export const useDGroupForm = ({
 			// 		churchId: values.churchId,
 			// 	});
 			// }
-			// return addDGroup({
-			// 	name: values.name.trim(),
-			// 	churchId: values.churchId || churchId!,
-			// });
+			return addDGroup({
+				name: values.name,
+				dleaders: values.dleaders,
+				type: values.type,
+				churchId: values.churchId,
+			});
 		},
 
 		onSuccess: () => {
@@ -71,15 +74,7 @@ export const useDGroupForm = ({
 	});
 
 	// ✅ Derive initial values
-	const initialValues = dGroup
-		? {
-				name: dGroup.name,
-				churchId: dGroup.churchId,
-		  }
-		: {
-				...staticInitialValues,
-				churchId: churchId ?? 0,
-		  };
+	const initialValues = staticInitialValues;
 
 	// ✅ Formik
 	const formik = useFormik({
