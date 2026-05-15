@@ -33,6 +33,7 @@ export type AppStackParamList = {
 	BottomNavigator: NavigatorScreenParams<BottomTabParamList>;
 	EventNavigator: NavigatorScreenParams<EventStackParamList>;
 	UserNavigator: NavigatorScreenParams<UserStackParamList>;
+	DGroupNavigator: NavigatorScreenParams<DGroupStackParamList>;
 };
 
 export type AppNavigationProp = NativeStackNavigationProp<AppStackParamList>;

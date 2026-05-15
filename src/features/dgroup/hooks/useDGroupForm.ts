@@ -5,7 +5,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { dgroupRepository } from "../data/dgroupRepository";
 import { toast } from "@component/toast/toast";
 import { useDGroupViewModel } from "../viewModel/useDGroupViewModel";
-import { DGroupListItemDTO } from "../model/DGroup";
+import { DGroupDTO, DGroupListItemDTO } from "../model/DGroup";
 import { DGroupType } from "src/types/enums/LifeStage";
 
 interface UseDGroupFormProps {
@@ -36,13 +36,12 @@ export const useDGroupForm = ({
 	const { addDGroup, updateDGroup } = useDGroupViewModel();
 
 	// ✅ Fetch DGroup (EDIT mode)
-	const { data: dGroup, isLoading: isFetching } =
-		useQuery<DGroupListItemDTO | null>({
-			queryKey: ["dGroup", dGroupId],
-			queryFn: () => dgroupRepository.getDGroupById?.(dGroupId!),
-			enabled: !!dGroupId,
-			staleTime: 1000 * 60 * 5,
-		});
+	const { data: dGroup, isLoading: isFetching } = useQuery<DGroupDTO>({
+		queryKey: ["dGroup", dGroupId],
+		queryFn: () => dgroupRepository.getDGroupById?.(dGroupId!),
+		enabled: !!dGroupId,
+		staleTime: 1000 * 60 * 5,
+	});
 
 	// ✅ Mutation (CREATE / UPDATE)
 	const mutation = useMutation({

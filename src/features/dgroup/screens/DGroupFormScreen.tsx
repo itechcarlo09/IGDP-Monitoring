@@ -16,6 +16,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CCFSelectInput from "@components/CCFSelectInput";
 import { Gender } from "src/types/enums/Gender";
 import { useAccountStore } from "@features/account/account.store";
+import { CoupleDTO, DMemberDTO } from "../model/DGroup";
 
 type SchoolRouteProp = RouteProp<DgroupStackParamList, "DGroupFormScreen">;
 type NavProp = NativeStackNavigationProp<DgroupStackParamList>;
@@ -26,8 +27,9 @@ const DGroupFormScreen = () => {
 	const { account } = useAccountStore();
 	const navigation = useNavigation<NavProp>();
 	const route = useRoute<SchoolRouteProp>();
-	const { formik, loading } = useDGroupForm({
-		dGroupId: 0,
+	const { id } = route.params || {};
+	const { formik, loading, dGroup } = useDGroupForm({
+		dGroupId: id,
 		churchId: account?.churchId ?? 0,
 		onSuccess: navigation.goBack,
 	});
@@ -36,10 +38,35 @@ const DGroupFormScreen = () => {
 		value: item,
 	}));
 
+	console.log(dGroup);
+
+	function isCoupleDTO(
+		leader: Omit<DMemberDTO, "middleName" | "gender"> | CoupleDTO,
+	): leader is CoupleDTO {
+		return "husband" in leader && "wife" in leader;
+	}
+
 	useEffect(() => {
 		formik.setFieldValue("churchId", account?.churchId);
 		formik.setFieldValue("type", lifeStageItems[0].value);
 	}, []);
+
+	useEffect(() => {
+		if (!dGroup) return;
+		if (isCoupleDTO(dGroup.leader)) {
+			formik.setFieldValue(
+				"lifeStage",
+				`${dGroup.leader.husband.firstName} & ${dGroup.leader.wife.firstName} ${dGroup.leader.husband.lastName}`,
+			);
+		} else {
+			formik.setFieldValue(
+				"lifeStage",
+				`${dGroup.leader.firstName} ${dGroup.leader.lastName}`,
+			);
+		}
+		formik.setFieldValue("name", dGroup.name);
+		formik.setFieldValue("type", dGroup.type);
+	}, [dGroup]);
 
 	if (loading) return <Loading />;
 

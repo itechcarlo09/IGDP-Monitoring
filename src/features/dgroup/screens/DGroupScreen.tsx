@@ -10,7 +10,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useUserViewModel } from "@features/member/viewModel/useUserViewModel";
 import { Separator } from "@component/Separator";
-import { AppStackParamList } from "src/types/navigation";
+import { AppStackParamList, DgroupStackParamList } from "src/types/navigation";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CCFHeader from "@components/CCFHeader";
@@ -22,7 +22,7 @@ import DGroupListCard from "src/feature/dgroup/view/components/DGroupListCard";
 import { toast } from "@component/toast/toast";
 import DGroupListItem from "../components/DGroupListItem";
 
-type UserRouteProp = RouteProp<AppStackParamList, "UserNavigator">;
+type UserRouteProp = RouteProp<AppStackParamList, "DgroupNavigator">;
 type NavProp = NativeStackNavigationProp<AppStackParamList>;
 const getRandomStatus = (): MemberCardProps["status"] => {
 	const statuses: MemberCardProps["status"][] = [
@@ -86,11 +86,11 @@ const DGroupScreen = () => {
 				showAdd
 				searchText={searchText}
 				onChangeSearch={setSearchText}
-				onAddPress={() => {
+				onAddPress={() =>
 					navigation.navigate("DGroupNavigator", {
 						screen: "DGroupFormScreen",
-					});
-				}}
+					})
+				}
 				placeholder="Search DGroup.."
 			/>
 			<FlatList
@@ -108,7 +108,10 @@ const DGroupScreen = () => {
 						category={item.memberTypes}
 						avatar={null}
 						onPress={() =>
-							toast.default("DGroup Item function is not implemented yet")
+							navigation.navigate("DGroupNavigator", {
+								screen: "DGroupFormScreen",
+								params: { id: item.id },
+							})
 						}
 					/>
 				)}

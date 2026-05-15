@@ -1,6 +1,6 @@
 import { Gender } from "src/types/enums/Gender";
 import { PaginatedResponse } from "../../../types/paginationTypes";
-import { LifeStage } from "src/types/enums/LifeStage";
+import { DGroupType, LifeStage } from "src/types/enums/LifeStage";
 
 // export interface Speaker {
 // 	id: number;
@@ -18,12 +18,18 @@ import { LifeStage } from "src/types/enums/LifeStage";
 // 	speaker: Speaker;
 // }
 
+export interface CoupleDTO {
+	id: number;
+	husband: Omit<DMemberDTO, "middleName" | "gender">;
+	wife: Omit<DMemberDTO, "middleName" | "gender">;
+}
+
 export interface DGroupDTO {
 	id: number;
 	name: string;
-	dleaders: DMemberDTO[];
+	leader: Omit<DMemberDTO, "middleName" | "gender"> | CoupleDTO;
 	dmembers: DMemberDTO[];
-	churchId: number;
+	type: DGroupType;
 }
 
 export interface DMemberDTO {
