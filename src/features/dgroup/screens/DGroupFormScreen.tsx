@@ -28,7 +28,7 @@ const DGroupFormScreen = () => {
 	const route = useRoute<SchoolRouteProp>();
 	const { formik, loading } = useDGroupForm({
 		dGroupId: 0,
-		churchId: 0,
+		churchId: account?.churchId ?? 0,
 		onSuccess: navigation.goBack,
 	});
 	const lifeStageItems = Object.values(DGroupType).map((item) => ({
@@ -82,9 +82,9 @@ const DGroupFormScreen = () => {
 						onPress={() =>
 							navigation.navigate("DGroupLeaderScreen", {
 								type: formik.values.type,
-								onSuccess: (name, ids) => {
+								onSuccess: (name, id) => {
 									formik.setFieldValue("lifeStage", name);
-									formik.setFieldValue("dleaders", ids);
+									formik.setFieldValue("dleaders", id);
 								},
 							})
 						}

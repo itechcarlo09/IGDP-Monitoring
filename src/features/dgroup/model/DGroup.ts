@@ -43,6 +43,7 @@ export interface DGroupListItemDTO {
 }
 
 export interface DGroupCoupleLeaderListItemDTO {
+	id: number;
 	husbandId: number;
 	husbandFirstName: string;
 	husbandMiddleName: string;

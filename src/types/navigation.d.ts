@@ -99,7 +99,7 @@ export type DgroupStackParamList = {
 				gender?: Gender;
 				type: DGroupType;
 				exemptedAccountId?: number;
-				onSuccess: (leaderName: string, leadersIDs: number[]) => void;
+				onSuccess: (leaderName: string, leadersID: number) => void;
 		  }
 		| undefined;
 };

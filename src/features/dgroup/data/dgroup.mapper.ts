@@ -55,7 +55,7 @@ const mapSingleLeader = (item: DMemberDTO): DGroupLeaderItemUI => ({
 const mapCoupleLeader = (
 	item: DGroupCoupleLeaderListItemDTO,
 ): DGroupLeaderItemUI => ({
-	id: [item.husbandId, item.wifeId],
+	id: item.id,
 	groupName: `${item.husbandFirstName} & ${item.wifeFirstName} ${item.husbandLastName}`,
 	gender: "Couples",
 });

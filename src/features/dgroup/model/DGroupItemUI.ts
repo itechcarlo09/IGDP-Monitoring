@@ -13,7 +13,7 @@ export interface DGroupItemUI {
 }
 
 export interface DGroupLeaderItemUI {
-	id: number | number[];
+	id: number;
 	groupName: string;
 	leadersName?: string;
 	gender: Gender | "Couples";

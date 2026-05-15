@@ -17,7 +17,7 @@ export type GetDGroupLeadersParams = {
 
 export type AddDGroupLeadersParams = {
 	name?: string;
-	dleaders: number[];
+	dleaders: number;
 	type: DGroupType;
 	churchId: number;
 };

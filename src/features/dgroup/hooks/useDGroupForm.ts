@@ -10,7 +10,7 @@ import { DGroupType } from "src/types/enums/LifeStage";
 
 interface UseDGroupFormProps {
 	dGroupId?: number;
-	churchId?: number; // needed for create
+	churchId: number;
 	onSuccess?: () => void;
 }
 
@@ -18,7 +18,7 @@ const staticInitialValues = {
 	name: "",
 	type: "Singles" as DGroupType,
 	leader: [],
-	dleaders: [] as number[],
+	dleaders: 0,
 	dmembers: [] as number[],
 	churchId: 0,
 };
@@ -57,7 +57,7 @@ export const useDGroupForm = ({
 				name: values.name,
 				dleaders: values.dleaders,
 				type: values.type,
-				churchId: values.churchId,
+				churchId,
 			});
 		},
 

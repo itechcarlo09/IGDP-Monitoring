@@ -92,16 +92,12 @@ const DGroupLeaderSelectionScreen = () => {
 				style={{ paddingHorizontal: 16 }}
 				renderItem={({ item }) => (
 					<DGroupListItem
-						id={Array.isArray(item.id) ? item.id.join(",") : item.id}
+						id={item.id}
 						name={item.groupName}
 						leaders={item.leadersName}
 						avatar={null}
 						onPress={() => {
-							onSuccess &&
-								onSuccess(
-									item.groupName ?? "",
-									Array.isArray(item.id) ? item.id : [item.id],
-								);
+							onSuccess && onSuccess(item.groupName ?? "", item.id);
 							navigation.goBack();
 						}}
 					/>
