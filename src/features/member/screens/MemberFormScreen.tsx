@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import Loading from "../../../component/Loading";
 import { useTheme } from "../../../theme/ThemeProvider";
@@ -6,68 +6,37 @@ import { design } from "@theme/index";
 import CCFTextInput from "src/components/CCFTextInput";
 import CCFButton from "@components/CCFButton";
 import CCFChoiceChip from "@components/CCFChoiceChip";
-import { DGroupType } from "src/types/enums/LifeStage";
-import { useDGroupForm } from "../hooks/useDGroupForm";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CCFHeader from "@components/CCFHeader";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { DgroupStackParamList } from "src/types/navigation";
+import { UserStackParamList } from "src/types/navigation";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import CCFSelectInput from "@components/CCFSelectInput";
 import { useAccountStore } from "@features/account/account.store";
-import { CoupleDTO, DMemberDTO } from "../model/DGroup";
+import { useUserForm } from "../hooks/useUserForm";
+import { Gender } from "../model/user";
 
-type SchoolRouteProp = RouteProp<DgroupStackParamList, "DGroupFormScreen">;
-type NavProp = NativeStackNavigationProp<DgroupStackParamList>;
+type UserRouteProp = RouteProp<UserStackParamList, "UserForm">;
+type NavProp = NativeStackNavigationProp<UserStackParamList>;
 
-const DGroupFormScreen = () => {
+const MemberFormScreen = () => {
 	const { theme } = useTheme();
 	const insets = useSafeAreaInsets();
 	const { account } = useAccountStore();
 	const navigation = useNavigation<NavProp>();
-	const route = useRoute<SchoolRouteProp>();
+	const route = useRoute<UserRouteProp>();
 	const { id } = route.params || {};
-	const { formik, loading, dGroup } = useDGroupForm({
-		dGroupId: id,
-		churchId: account?.churchId ?? 0,
+	const { formik, isLoading } = useUserForm({
+		userId: 0,
 		onSuccess: navigation.goBack,
 	});
-	const lifeStageItems = Object.values(DGroupType).map((item) => ({
+
+	const genderItems = Object.values(Gender).map((item) => ({
 		label: item,
 		value: item,
 	}));
 
-	console.log(dGroup);
-
-	function isCoupleDTO(
-		leader: Omit<DMemberDTO, "middleName" | "gender"> | CoupleDTO,
-	): leader is CoupleDTO {
-		return "husband" in leader && "wife" in leader;
-	}
-
-	useEffect(() => {
-		formik.setFieldValue("churchId", account?.churchId);
-		formik.setFieldValue("type", lifeStageItems[0].value);
-	}, []);
-
-	useEffect(() => {
-		if (!dGroup) return;
-		if (isCoupleDTO(dGroup.leader)) {
-			formik.setFieldValue(
-				"lifeStage",
-				`${dGroup.leader.husband.firstName} & ${dGroup.leader.wife.firstName} ${dGroup.leader.husband.lastName}`,
-			);
-		} else {
-			formik.setFieldValue(
-				"lifeStage",
-				`${dGroup.leader.firstName} ${dGroup.leader.lastName}`,
-			);
-		}
-		formik.setFieldValue("name", dGroup.name);
-		formik.setFieldValue("type", dGroup.type);
-	}, [dGroup]);
-
-	if (loading) return <Loading />;
+	if (isLoading) return <Loading />;
 
 	return (
 		<View style={[styles.mainContainer, { backgroundColor: theme.background }]}>
@@ -90,7 +59,7 @@ const DGroupFormScreen = () => {
 					/>
 					<CCFChoiceChip
 						name="type"
-						items={lifeStageItems}
+						items={genderItems}
 						value={formik.values.type}
 						onChange={(value) => {
 							if (value === formik.values.type) return;
@@ -119,9 +88,9 @@ const DGroupFormScreen = () => {
 					/>
 				</View>
 				<CCFButton
-					title={"Create DGroup"}
+					title={"Create Member"}
 					onPress={formik.handleSubmit as any}
-					disabled={loading}
+					disabled={isLoading}
 					style={{ marginBottom: insets.bottom }}
 				/>
 			</View>
@@ -135,4 +104,4 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default DGroupFormScreen;
+export default MemberFormScreen;
